@@ -87,3 +87,12 @@ input:focus, textarea:focus, select:focus {
   padding: 2rem;
   box-shadow: var(--shadow);
 }
+
+@media (max-width: 600px) {
+  #root {
+    padding: 0.5rem;
+  }
+  .glass-panel {
+    padding: 1.25rem;
+  }
+}
