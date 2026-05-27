@@ -180,3 +180,29 @@ textarea.name-input {
   border: 2px solid var(--primary-color);
   pointer-events: none;
 }
+
+.toast-notification {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary-color);
+  color: var(--bg-color);
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  z-index: 1000;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: center;
+  max-width: 90%;
+  width: max-content;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translate(-50%, 1.5rem) scale(0.95); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}

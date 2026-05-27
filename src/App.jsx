@@ -19,6 +19,14 @@ function App() {
   const templateRefs = useRef([]);
   const gridRef = useRef(null);
   const [scale, setScale] = useState(0.3);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  const showToast = (message) => {
+    setToastMessage(message);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 5000);
+  };
 
   useEffect(() => {
     localStorage.setItem('invite_namesText', namesText);
@@ -132,7 +140,7 @@ function App() {
       });
       
       await navigator.clipboard.write([item]);
-      alert('Image copied to clipboard!');
+      showToast('Image copied to clipboard! You can now paste this directly into any application like WhatsApp or Messages.');
     } catch (err) {
       console.error('Error copying image:', err);
       alert('Failed to copy image: ' + err.message);
@@ -332,6 +340,13 @@ function App() {
           </div>
         </section>
       </main>
+
+      {toastMessage && (
+        <div className="toast-notification">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink: 0}}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <span>{toastMessage}</span>
+        </div>
+      )}
     </div>
   );
 }
