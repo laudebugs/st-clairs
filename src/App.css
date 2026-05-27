@@ -176,7 +176,7 @@ textarea.name-input {
   transform: translate(-50%, -50%);
   width: 42px;
   height: 42px;
-  border-radius: 50%;
+  border-radius: 8px; /* Square matching the swatch shape */
   border: 2px solid var(--primary-color);
   pointer-events: none;
 }
