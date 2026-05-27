@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import { toJpeg } from 'html-to-image';
+import { toJpeg, toPng } from 'html-to-image';
 import HTMLInviteTemplate from './components/HTMLInviteTemplate';
 import './App.css';
 
@@ -102,9 +102,9 @@ function App() {
         alert('File sharing is not supported on this device/browser. Try downloading instead.');
       }
     } catch (err) {
-      if (err.name !== 'AbortError') {
+      if (err.name !== 'AbortError' && err.name !== 'NotAllowedError') {
         console.error('Error sharing image:', err);
-        alert('Failed to share image.');
+        alert('Failed to share: ' + err.message);
       }
     }
   };
@@ -114,24 +114,28 @@ function App() {
     if (!node) return;
     
     try {
-      const dataUrl = await toJpeg(node, { quality: 0.95, pixelRatio: 2, style: { transform: 'scale(1)' } });
-      const res = await fetch(dataUrl);
-      const blob = await res.blob();
-      
-      if (navigator.clipboard && navigator.clipboard.write) {
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            [blob.type]: blob
-          })
-        ]);
-        // Visual feedback could be added here, but an alert is simple for now
-        alert('Image copied to clipboard!');
-      } else {
+      if (!navigator.clipboard || !navigator.clipboard.write) {
         alert('Copying images is not supported by your browser.');
+        return;
       }
+
+      // Safari requires passing a Promise to ClipboardItem to maintain user gesture
+      // Clipboard API generally only mandates support for 'image/png'
+      const makeBlobPromise = async () => {
+        const dataUrl = await toPng(node, { quality: 0.95, pixelRatio: 2, style: { transform: 'scale(1)' } });
+        const res = await fetch(dataUrl);
+        return await res.blob();
+      };
+      
+      const item = new ClipboardItem({
+        'image/png': makeBlobPromise()
+      });
+      
+      await navigator.clipboard.write([item]);
+      alert('Image copied to clipboard!');
     } catch (err) {
       console.error('Error copying image:', err);
-      alert('Failed to copy image.');
+      alert('Failed to copy image: ' + err.message);
     }
   };
 
