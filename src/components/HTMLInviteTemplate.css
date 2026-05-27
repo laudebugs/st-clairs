@@ -1,0 +1,184 @@
+/* We need a specific cursive font for the elegant text */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,600;1,600&family=Montserrat:wght@400;600;700&family=Courier+Prime:wght@400;700&display=swap');
+
+.invite-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* 
+  The dimensions should ideally maintain an aspect ratio similar to a standard card.
+  We will set a fixed width for the capture container to ensure the exported image is high quality and consistent,
+  while using CSS transforms to scale it down for visual preview.
+*/
+.invite-border-rainbow {
+  width: 1000px;
+  height: 750px;
+  background: linear-gradient(135deg, #00ff00, #ffff00, #0000ff, #ff00ff, #ff0000);
+  /* A more accurate rainbow border mimicking the image */
+  background: conic-gradient(from 180deg at 50% 50%, #1738c6, #ff0000, #ff8c00, #00ff00, #00ffff, #1738c6);
+  padding: 15px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  /* Prevent background bleed */
+  position: relative;
+  overflow: hidden;
+  background-color: white; /* fallback */
+}
+
+.invite-border-black-thin {
+  width: 100%;
+  height: 100%;
+  border: 3px solid black;
+  box-sizing: border-box;
+}
+
+.invite-border-white {
+  width: 100%;
+  height: 100%;
+  border: 4px solid white;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.invite-border-filmstrip {
+  width: 100%;
+  height: 100%;
+  /* Repeating black and white gradient */
+  background: repeating-linear-gradient(
+    45deg,
+    #000,
+    #000 10px,
+    #fff 10px,
+    #fff 20px
+  );
+  padding: 8px; /* Thickness of the filmstrip */
+  box-sizing: border-box;
+}
+
+.invite-border-red {
+  width: 100%;
+  height: 100%;
+  border: 20px solid #e3342f; /* Deep red */
+  background-color: white; /* The main content background */
+  box-sizing: border-box;
+  padding: 15px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.invite-content-area {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+/* Typography styles matching the image */
+
+.text-header {
+  font-family: 'Montserrat', sans-serif;
+  color: #e3342f; /* Red */
+  font-size: 26px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+  margin-top: 10px;
+  letter-spacing: 0.5px;
+}
+
+.text-humbly {
+  font-family: 'Great Vibes', cursive;
+  color: #1a4f8b; /* Blue */
+  font-size: 42px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.dynamic-name {
+  text-align: center;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 0;
+}
+
+.blue-divider {
+  border: none;
+  border-top: 3px solid #0000ff; /* Bright blue */
+  width: 90%;
+  margin: 10px auto;
+}
+
+.text-body-main {
+  font-family: 'Montserrat', sans-serif;
+  color: #000;
+  font-size: 19px;
+  font-weight: 600; /* bold body text */
+  text-align: center;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.text-body-blue {
+  font-family: 'Montserrat', sans-serif;
+  color: #0000ff; /* Bright blue */
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.text-body-red-cursive {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 600;
+  color: #e3342f;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.text-body-green-cursive {
+  font-family: 'Great Vibes', cursive;
+  color: #128c3a; /* Green */
+  font-size: 30px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.text-rsvp {
+  font-family: 'Montserrat', sans-serif;
+  color: #e3342f;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 10px;
+  letter-spacing: 2px;
+}
+
+.footer-blocks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto; /* Push to bottom */
+  margin-bottom: 0px;
+  padding: 0 10px;
+}
+
+.footer-left, .footer-right {
+  font-family: 'Courier Prime', monospace; /* The bottom text looks a bit like typewriter/monospace or a strong serif */
+  font-weight: 700;
+  color: #000;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.footer-right {
+  text-align: right;
+}
