@@ -45,7 +45,7 @@ function App() {
   useEffect(() => {
     const grid = gridRef.current;
     if (!grid) return;
-    const observer = new ResizeObserver((entries) => {
+    const observer = new ResizeObserver(() => {
       const wrapper = grid.querySelector('.preview-scale-wrapper');
       if (wrapper) {
         setScale(wrapper.clientWidth / 1000);
@@ -117,7 +117,7 @@ function App() {
     }
   };
 
-  const handleCopySingle = async (index, name) => {
+  const handleCopySingle = async (index) => {
     const node = templateRefs.current[index];
     if (!node) return;
     
@@ -292,7 +292,7 @@ function App() {
                     {!!(navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) && (
                       <button 
                         className="btn-secondary" 
-                        onClick={() => handleCopySingle(index, name)}
+                        onClick={() => handleCopySingle(index)}
                         style={{display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flex: 1, borderColor: '#ffffff'}}
                         disabled={isGenerating}
                       >
@@ -334,8 +334,8 @@ function App() {
           <div style={{marginTop: '4rem', fontSize: '0.7rem', color: '#666', textAlign: 'center'}}>
             Debug: 
             SecureContext: {window.isSecureContext ? 'Yes' : 'No'} | 
-            Share API: {!!navigator.share ? 'Yes' : 'No'} | 
-            Clipboard API: {!!(navigator.clipboard && navigator.clipboard.write) ? 'Yes' : 'No'} | 
+            Share API: {navigator.share ? 'Yes' : 'No'} | 
+            Clipboard API: {navigator.clipboard && navigator.clipboard.write ? 'Yes' : 'No'} | 
             ClipboardItem: {typeof window.ClipboardItem !== 'undefined' ? 'Yes' : 'No'}
           </div>
         </section>
