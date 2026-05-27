@@ -72,6 +72,34 @@ function App() {
     }
   };
 
+  const handleShareSingle = async (index, name) => {
+    const node = templateRefs.current[index];
+    if (!node) return;
+    
+    try {
+      const dataUrl = await toJpeg(node, { quality: 0.95, pixelRatio: 2, style: { transform: 'scale(1)' } });
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      const safeName = name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
+      const file = new File([blob], `Invite_${safeName}.jpg`, { type: 'image/jpeg' });
+      
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: `${name}'s Invite`,
+          text: `Here is the invite for ${name}!`
+        });
+      } else {
+        alert('File sharing is not supported on this device/browser. Try downloading instead.');
+      }
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Error sharing image:', err);
+        alert('Failed to share image.');
+      }
+    }
+  };
+
   const handleDownloadAll = async () => {
     if (names.length === 0) return;
     
@@ -168,14 +196,6 @@ function App() {
             </div>
           </div>
           
-          <button 
-            className="btn-primary" 
-            onClick={handleDownloadAll}
-            disabled={names.length === 0 || isGenerating}
-            style={{marginTop: '1rem'}}
-          >
-            {isGenerating ? 'Generating ZIP...' : `Download All (${names.length} Invites)`}
-          </button>
         </section>
 
         <section className="preview-section glass-panel">
@@ -211,17 +231,42 @@ function App() {
                     />
                   </div>
                 </div>
-                <button 
-                  className="btn-secondary" 
-                  onClick={() => handleDownloadSingle(index, name)}
-                  style={{marginTop: '1rem', width: '100%'}}
-                  disabled={isGenerating}
-                >
-                  Download {name}'s invite
-                </button>
+                <div style={{display: 'flex', gap: '0.5rem', marginTop: '1rem', width: '100%'}}>
+                  <button 
+                    className="btn-secondary" 
+                    onClick={() => handleDownloadSingle(index, name)}
+                    style={{flex: 1}}
+                    disabled={isGenerating}
+                  >
+                    Download {name}'s invite
+                  </button>
+                  {navigator.canShare && (
+                    <button 
+                      className="btn-primary" 
+                      onClick={() => handleShareSingle(index, name)}
+                      style={{flex: 1}}
+                      disabled={isGenerating}
+                    >
+                      Share
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
+          
+          {names.length > 0 && (
+            <div style={{display: 'flex', justifyContent: 'center', marginTop: '2rem'}}>
+              <button 
+                className="btn-primary" 
+                onClick={handleDownloadAll}
+                disabled={isGenerating}
+                style={{padding: '1rem 3rem', fontSize: '1.2rem'}}
+              >
+                {isGenerating ? 'Generating ZIP...' : `Download All (${names.length} Invites)`}
+              </button>
+            </div>
+          )}
         </section>
       </main>
     </div>
