@@ -6,16 +6,27 @@ import HTMLInviteTemplate from './components/HTMLInviteTemplate';
 import './App.css';
 
 function App() {
-  const [namesText, setNamesText] = useState('');
-  const [settings, setSettings] = useState({
-    fontSize: 56,
-    color: '#000000', // Default black name
-    fontFamily: '"Playfair Display", serif'
+  const [namesText, setNamesText] = useState(() => localStorage.getItem('invite_namesText') || '');
+  const [settings, setSettings] = useState(() => {
+    const saved = localStorage.getItem('invite_settings');
+    return saved ? JSON.parse(saved) : {
+      fontSize: 56,
+      color: '#000000',
+      fontFamily: '"Playfair Display", serif'
+    };
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const templateRefs = useRef([]);
   const gridRef = useRef(null);
   const [scale, setScale] = useState(0.3);
+
+  useEffect(() => {
+    localStorage.setItem('invite_namesText', namesText);
+  }, [namesText]);
+
+  useEffect(() => {
+    localStorage.setItem('invite_settings', JSON.stringify(settings));
+  }, [settings]);
 
   // Extract non-empty names
   const names = namesText
