@@ -60,12 +60,10 @@ function App() {
     
     try {
       const dataUrl = await toJpeg(node, { quality: 0.95, pixelRatio: 2, style: { transform: 'scale(1)' } });
-      const link = document.createElement('a');
-      link.download = `Invite_${name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.jpg`;
-      link.href = dataUrl;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const res = await fetch(dataUrl);
+      const blob = await res.blob();
+      const filename = `Invite_${name.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.jpg`;
+      saveAs(blob, filename);
     } catch (err) {
       console.error('Error generating image:', err);
       alert('Failed to generate image.');
@@ -309,6 +307,14 @@ function App() {
               </button>
             </div>
           )}
+          
+          <div style={{marginTop: '4rem', fontSize: '0.7rem', color: '#666', textAlign: 'center'}}>
+            Debug: 
+            SecureContext: {window.isSecureContext ? 'Yes' : 'No'} | 
+            Share API: {!!navigator.share ? 'Yes' : 'No'} | 
+            Clipboard API: {!!(navigator.clipboard && navigator.clipboard.write) ? 'Yes' : 'No'} | 
+            ClipboardItem: {typeof window.ClipboardItem !== 'undefined' ? 'Yes' : 'No'}
+          </div>
         </section>
       </main>
     </div>
